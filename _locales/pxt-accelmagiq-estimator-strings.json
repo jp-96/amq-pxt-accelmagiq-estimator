@@ -1,0 +1,22 @@
+{
+  "accelmagiq.CoordinateSystem.BASIC": "BASIC: a non-tilt compensated bearing of the device (North: logo mark)",
+  "accelmagiq.CoordinateSystem.BASIC|block": "BASIC",
+  "accelmagiq.CoordinateSystem.RAW": "RAW: a raw coordinate system (North: A-button, upside-down)",
+  "accelmagiq.CoordinateSystem.RAW|block": "RAW",
+  "accelmagiq.CoordinateSystem.TILT": "TILT: a tilt compensated bearing of the device (North: back side)",
+  "accelmagiq.CoordinateSystem.TILT|block": "TILT",
+  "accelmagiq.EstimationMethod.FAMC": "FAMC estimation method",
+  "accelmagiq.EstimationMethod.FAMC|block": "FAMC",
+  "accelmagiq.EstimationMethod.SIMPLE": "SIMPLE estimation method",
+  "accelmagiq.EstimationMethod.SIMPLE|block": "Simple",
+  "accelmagiq.estimate|block": "Estimate Quaternion",
+  "accelmagiq.setAlpha|block": "Set Alpha %alpha",
+  "accelmagiq.setCoordinateSystem|block": "set coordinate system %system",
+  "accelmagiq.setEstimateMethod|block": "set estimate method %method",
+  "accelmagiq.startSampling|block": "Start sampling",
+  "accelmagiq.stopSampling|block": "Stop Sampling",
+  "accelmagiq|block": "AccelMagiQ",
+  "{id:category}Accelmagiq": "Accelmagiq",
+  "{id:category}Accelmagiq_": "Accelmagiq_",
+  "{id:group}Sensor": "Sensor"
+}
