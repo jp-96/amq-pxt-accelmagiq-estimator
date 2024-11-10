@@ -3,8 +3,9 @@
 
 using namespace accelmagiqlib;
 
-namespace
+namespace accelmagiq_
 {
+
     static QuaternionEstimator *_pQuaternionEstimator = nullptr;
     QuaternionEstimator &instance()
     {
@@ -12,10 +13,6 @@ namespace
             _pQuaternionEstimator = new QuaternionEstimator();
         return *_pQuaternionEstimator;
     }
-}
-
-namespace accelmagiq_
-{
 
     //%
     void setCoordinateSystem(int system)

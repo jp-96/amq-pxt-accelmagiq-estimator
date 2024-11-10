@@ -23,7 +23,7 @@ namespace accelmagiqlib
          */
         QuaternionEstimator()
             : currentMethod(ESTIMATION_METHOD_FAMC),
-              isSampling(false),
+              isListen(false), isSampling(false),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
@@ -72,6 +72,7 @@ namespace accelmagiqlib
         void pauseSampling();
 
     private:
+        bool isListen;   /**< listen/ignore defaultEventBus */
         bool isSampling; /**< Indicates whether the sampling of sensor data is active */
 
         /**
