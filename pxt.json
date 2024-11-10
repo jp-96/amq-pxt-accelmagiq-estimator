@@ -1,18 +1,21 @@
 {
-    "name": "pxt-ubit-extension",
+    "name": "pxt-accelmagiq-estimator",
     "version": "0.1.0-alpha",
-    "description": "(description: this description is written in pxt.json)",
+    "description": "A Simplified Analytic Attitude Determination Algorithm Using Accelerometer and Magnetometer on micro:bit.",
     "dependencies": {
         "core": "*"
     },
     "files": [
-        "README.md",
+        "src/lib/AccelMagiQLibCoordinateSpaceFilter.h",
+        "src/lib/AccelMagiQLibCoordinateSpaceFilter.cpp",
+        "src/lib/AccelMagiQLibQuaternionEstimator.h",
+        "src/lib/AccelMagiQLibQuaternionEstimator.cpp",
+        "src/accelmagiq_.cpp",
+        "src/accelmagiq_.ts",
+        "src/accelmagiq.ts",
         "enums.d.ts",
         "shims.d.ts",
-        "src/custom.ts",
-        "src/custom.cpp",
-        "src/customlib.h",
-        "src/customlib.cpp"
+        "README.md"
     ],
     "testFiles": [
         "test/test.ts"
