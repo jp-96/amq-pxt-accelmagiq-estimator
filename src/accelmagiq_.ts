@@ -35,7 +35,8 @@ namespace accelmagiq_ {
         method_ = method;
     }
 
-    let sampling_ = false;
+    // sampling for simulator
+    let sampling_ = true;   // auto start
 
     //% shim=accelmagiq_::startSampling
     export function startSampling(): void {
