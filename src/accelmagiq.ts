@@ -14,7 +14,7 @@
  */
 //% block="AccelMagiQ"
 //% weight=95 color=#4b0082 icon="\uf1d8"
-//% groups="['Sensor']"
+//% groups="['Quaternion', 'EulerAngles', 'Sensor', 'Service']"
 namespace accelmagiq {
 
     /** 
@@ -29,7 +29,7 @@ namespace accelmagiq {
         /**
          * SIMPLE estimation method
          */
-        //% block="Simple"
+        //% block="SIMPLE"
         SIMPLE = 1
     }
 
@@ -58,9 +58,9 @@ namespace accelmagiq {
      * Estimates the current quaternion.
      * @returns An array containing the quaternion components [w, x, y, z].
      */
-    //% block="Estimate Quaternion"
+    //% block="estimate quaternion"
     //% group="Sensor"
-    //% weight=145
+    //% weight=105
     export function estimate(): number[] {
         accelmagiq_.estimate();
         return [accelmagiq_.getW(), accelmagiq_.getX(), accelmagiq_.getY(), accelmagiq_.getZ()];
@@ -71,7 +71,7 @@ namespace accelmagiq {
      */
     //% block="set coordinate system %system"
     //% group="Sensor"
-    //% weight=144
+    //% weight=104
     export function setCoordinateSystem(system: CoordinateSystem) {
         accelmagiq_.setCoordinateSystem(system);
     }
@@ -80,9 +80,9 @@ namespace accelmagiq {
      * Sets the alpha value for the low-pass filter.
      * @param alpha The new alpha value (between 0.0 and 1.0). Default is 0.3.
      */
-    //% block="Set Alpha %alpha"
+    //% block="set alpha %alpha"
     //% group="Sensor"
-    //% weight=143
+    //% weight=103
     //% alpha.defl=0.3
     //% advanced=true
     export function setAlpha(alpha: number): void {
@@ -93,9 +93,9 @@ namespace accelmagiq {
      * Start sampling.
      * @returns An array containing the quaternion components [w, x, y, z].
      */
-    //% block="Start sampling"
+    //% block="start sampling"
     //% group="Sensor"
-    //% weight=142
+    //% weight=102
     //% advanced=true
     export function startSampling(): void {
         accelmagiq_.startSampling();
@@ -104,9 +104,9 @@ namespace accelmagiq {
     /**
      * Stop sampling.
      */
-    //% block="Stop Sampling"
+    //% block="stop sampling"
     //% group="Sensor"
-    //% weight=141
+    //% weight=101
     //% advanced=true
     export function stopSampling(): void {
         accelmagiq_.stopSampling();
@@ -117,7 +117,7 @@ namespace accelmagiq {
      */
     //% block="set estimate method %method"
     //% group="Sensor"
-    //% weight=140
+    //% weight=100
     //% advanced=true
     export function setEstimateMethod(method: EstimationMethod): void {
         accelmagiq_.setEstimateMethod(method);
