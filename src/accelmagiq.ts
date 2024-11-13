@@ -29,7 +29,7 @@ namespace accelmagiq {
         /**
          * SIMPLE estimation method
          */
-        //% block="Simple"
+        //% block="SIMPLE"
         SIMPLE = 1
     }
 
@@ -58,7 +58,7 @@ namespace accelmagiq {
      * Estimates the current quaternion.
      * @returns An array containing the quaternion components [w, x, y, z].
      */
-    //% block="Estimate Quaternion"
+    //% block="estimate quaternion"
     //% group="Sensor"
     //% weight=105
     export function estimate(): number[] {
@@ -80,7 +80,7 @@ namespace accelmagiq {
      * Sets the alpha value for the low-pass filter.
      * @param alpha The new alpha value (between 0.0 and 1.0). Default is 0.3.
      */
-    //% block="Set Alpha %alpha"
+    //% block="set alpha %alpha"
     //% group="Sensor"
     //% weight=103
     //% alpha.defl=0.3
@@ -93,7 +93,7 @@ namespace accelmagiq {
      * Start sampling.
      * @returns An array containing the quaternion components [w, x, y, z].
      */
-    //% block="Start sampling"
+    //% block="start sampling"
     //% group="Sensor"
     //% weight=102
     //% advanced=true
@@ -104,7 +104,7 @@ namespace accelmagiq {
     /**
      * Stop sampling.
      */
-    //% block="Stop Sampling"
+    //% block="stop sampling"
     //% group="Sensor"
     //% weight=101
     //% advanced=true
