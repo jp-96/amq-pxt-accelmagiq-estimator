@@ -14,7 +14,7 @@
  */
 //% block="AccelMagiQ"
 //% weight=95 color=#4b0082 icon="\uf1d8"
-//% groups="['Sensor']"
+//% groups="['Quaternion', 'EulerAngles', 'Sensor', 'Service']"
 namespace accelmagiq {
 
     /** 
@@ -60,7 +60,7 @@ namespace accelmagiq {
      */
     //% block="Estimate Quaternion"
     //% group="Sensor"
-    //% weight=145
+    //% weight=105
     export function estimate(): number[] {
         accelmagiq_.estimate();
         return [accelmagiq_.getW(), accelmagiq_.getX(), accelmagiq_.getY(), accelmagiq_.getZ()];
@@ -71,7 +71,7 @@ namespace accelmagiq {
      */
     //% block="set coordinate system %system"
     //% group="Sensor"
-    //% weight=144
+    //% weight=104
     export function setCoordinateSystem(system: CoordinateSystem) {
         accelmagiq_.setCoordinateSystem(system);
     }
@@ -82,7 +82,7 @@ namespace accelmagiq {
      */
     //% block="Set Alpha %alpha"
     //% group="Sensor"
-    //% weight=143
+    //% weight=103
     //% alpha.defl=0.3
     //% advanced=true
     export function setAlpha(alpha: number): void {
@@ -95,7 +95,7 @@ namespace accelmagiq {
      */
     //% block="Start sampling"
     //% group="Sensor"
-    //% weight=142
+    //% weight=102
     //% advanced=true
     export function startSampling(): void {
         accelmagiq_.startSampling();
@@ -106,7 +106,7 @@ namespace accelmagiq {
      */
     //% block="Stop Sampling"
     //% group="Sensor"
-    //% weight=141
+    //% weight=101
     //% advanced=true
     export function stopSampling(): void {
         accelmagiq_.stopSampling();
@@ -117,7 +117,7 @@ namespace accelmagiq {
      */
     //% block="set estimate method %method"
     //% group="Sensor"
-    //% weight=140
+    //% weight=100
     //% advanced=true
     export function setEstimateMethod(method: EstimationMethod): void {
         accelmagiq_.setEstimateMethod(method);
