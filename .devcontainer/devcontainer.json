@@ -4,8 +4,9 @@
 	"name": "pxt-microbit(C++)",
 	"build": {
 		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Debian OS version: buster, stretch
-		"args": { "VARIANT": "buster" }
+		//    'VARIANT' Debian OS version: [buster], stretch
+		// 'NODE_VERSION' Node.js version: none, lts, 16, [14], 12, 10
+		"args": { "VARIANT": "buster", "NODE_VERSION": "14" }
 	},
 	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
 
