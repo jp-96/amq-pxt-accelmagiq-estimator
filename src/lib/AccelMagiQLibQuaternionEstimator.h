@@ -4,6 +4,17 @@
 #include "pxt.h"
 #include "AccelMagiQLibCoordinateSpaceFilter.h"
 
+/**
+ * Status flags
+ * Universal flags used as part of the status field
+ */
+#ifndef MICROBIT_COMPONENT_RUNNING
+#define MICROBIT_COMPONENT_RUNNING 0x01
+#endif
+#ifndef CUSTOM_COMPONENT_ADDED_TO_IDLE
+#define CUSTOM_COMPONENT_ADDED_TO_IDLE 0x02
+#endif
+
 namespace accelmagiqlib
 {
 
@@ -15,7 +26,7 @@ namespace accelmagiqlib
      * @class QuaternionEstimator
      * @brief This class estimates quaternion orientation based on accelerometer and magnetometer data.
      */
-    class QuaternionEstimator
+    class QuaternionEstimator : public MicroBitComponent
     {
     public:
         /**
@@ -23,13 +34,46 @@ namespace accelmagiqlib
          */
         QuaternionEstimator()
             : currentMethod(ESTIMATION_METHOD_FAMC),
+              updateSampleTimestamp(0),
               isListen(false), isSampling(false),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
             resumeSampling();
+            // register as idle component
+            // TODO: resumeSampling()/pauseSampling()
+            fiber_add_idle_component(this);
+            status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
+            status |= MICROBIT_COMPONENT_RUNNING;
         }
 
+    private:
+        // next sample timestamp scheduled
+        uint64_t updateSampleTimestamp;
+
+        /**
+         * @brief Periodic callback from MicroBit scheduler.
+         */
+        void idleUpdate();
+
+    public:
+#if MICROBIT_CODAL
+
+        /**
+         * @brief Periodic callback from MicroBit scheduler.
+         */
+        virtual void idleCallback();
+
+#else // MICROBIT_CODAL
+
+        /**
+         * @brief Periodic callback from MicroBit scheduler.
+         */
+        virtual void idleTick();
+
+#endif // MICROBIT_CODAL
+
+    public:
         // Getters for quaternion components
         /**
          * @brief Get the W component of the quaternion.

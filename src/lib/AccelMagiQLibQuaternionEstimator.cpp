@@ -3,6 +3,57 @@
 
 using namespace accelmagiqlib;
 
+void QuaternionEstimator::idleUpdate()
+{    
+    // if (status==0)
+    if (!isSampling) // TODO: status
+    {
+        return;
+    }
+
+    uint64_t currentTime = system_timer_current_time_us();
+    if (currentTime < updateSampleTimestamp)
+    {
+        return;
+    }
+
+    // Schedule our next sample.
+    updateSampleTimestamp = currentTime + uBit.accelerometer.getPeriod() * 1000;
+
+    double x;
+    double y;
+    double z;
+
+    // Update and normalize accelerometer data
+    x = uBit.accelerometer.getX();
+    y = uBit.accelerometer.getY();
+    z = uBit.accelerometer.getZ();
+    filterAccel.update(x, y, z);
+
+    // Update and normalize magnetometer data
+    x = uBit.compass.getX();
+    y = uBit.compass.getY();
+    z = uBit.compass.getZ();
+    filterMagne.update(x, y, z);
+
+}
+
+#if MICROBIT_CODAL
+
+void QuaternionEstimator::idleCallback()
+{
+    idleUpdate();
+}
+
+#else // MICROBIT_CODAL
+
+void QuaternionEstimator::idleTick()
+{
+    idleUpdate();
+}
+
+#endif // MICROBIT_CODAL
+
 double QuaternionEstimator::getW() const
 {
     return qw;
@@ -32,39 +83,39 @@ void QuaternionEstimator::setLowPassFilterAlpha(const double alpha)
 void QuaternionEstimator::resumeSampling()
 {
     isSampling = true;
-    if (isListen)
-        return;
-    isListen = true;
-    if (EventModel::defaultEventBus)
-    {
-        EventModel::defaultEventBus->listen(
-            MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::accelerometerUpdateHandler,
-            MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-        EventModel::defaultEventBus->listen(
-            MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::magnetometerUpdateHandler,
-            MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-    }
+    // if (isListen)
+    //     return;
+    // isListen = true;
+    // if (EventModel::defaultEventBus)
+    // {
+    //     EventModel::defaultEventBus->listen(
+    //         MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
+    //         this, &QuaternionEstimator::accelerometerUpdateHandler,
+    //         MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
+    //     EventModel::defaultEventBus->listen(
+    //         MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
+    //         this, &QuaternionEstimator::magnetometerUpdateHandler,
+    //         MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
+    // }
 }
 
 void QuaternionEstimator::pauseSampling()
 {
     isSampling = false;
-#if MICROBIT_CODAL
-    if (!isListen)
-        return;
-    isListen = false;
-    if (EventModel::defaultEventBus)
-    {
-        EventModel::defaultEventBus->ignore(
-            MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::accelerometerUpdateHandler);
-        EventModel::defaultEventBus->ignore(
-            MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::magnetometerUpdateHandler);
-    }
-#endif // MICROBIT_CODAL
+// #if MICROBIT_CODAL
+//     if (!isListen)
+//         return;
+//     isListen = false;
+//     if (EventModel::defaultEventBus)
+//     {
+//         EventModel::defaultEventBus->ignore(
+//             MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
+//             this, &QuaternionEstimator::accelerometerUpdateHandler);
+//         EventModel::defaultEventBus->ignore(
+//             MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
+//             this, &QuaternionEstimator::magnetometerUpdateHandler);
+//     }
+// #endif // MICROBIT_CODAL
 }
 
 void QuaternionEstimator::accelerometerUpdateHandler(MicroBitEvent e)
