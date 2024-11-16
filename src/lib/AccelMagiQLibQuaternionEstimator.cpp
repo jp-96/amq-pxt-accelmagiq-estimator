@@ -5,20 +5,15 @@ using namespace accelmagiqlib;
 
 void QuaternionEstimator::idleUpdate()
 {
-    if (!isSampling)
-    {
-        return;
-    }
-
+    // Schedule our next sample.
     uint64_t currentTime = system_timer_current_time_us();
     if (currentTime < updateSampleTimestamp)
     {
         return;
     }
-
-    // Schedule our next sample.
     updateSampleTimestamp = currentTime + uBit.accelerometer.getPeriod() * 1000;
 
+    // Do sampling
     double x;
     double y;
     double z;
@@ -83,16 +78,28 @@ void QuaternionEstimator::resumeSampling()
     if (status == 0)
     {
         // register as idle component
+#if MICROBIT_CODAL
+        addComponent();
+#else  // MICROBIT_CODAL
         fiber_add_idle_component(this);
-        status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
+#endif // MICROBIT_CODAL
         status |= MICROBIT_COMPONENT_RUNNING;
+        status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
     }
-    isSampling = true;
 }
 
 void QuaternionEstimator::pauseSampling()
 {
-    isSampling = false;
+    if (status != 0)
+    {
+        status = 0;
+        // unregister as idle component
+#if MICROBIT_CODAL
+        removeComponent();
+#else  // MICROBIT_CODAL
+        fiber_remove_idle_component(this);
+#endif // MICROBIT_CODAL
+    }
 }
 
 void QuaternionEstimator::setEstimateMethod(const int method)

@@ -34,7 +34,7 @@ namespace accelmagiqlib
          */
         QuaternionEstimator()
             : currentMethod(ESTIMATION_METHOD_FAMC),
-              updateSampleTimestamp(0), isSampling(false),
+              updateSampleTimestamp(0),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
@@ -42,8 +42,6 @@ namespace accelmagiqlib
         }
 
     private:
-        bool isSampling; /**< Indicates whether the sampling of sensor data is active */
-
         // next sample timestamp scheduled
         uint64_t updateSampleTimestamp;
 
