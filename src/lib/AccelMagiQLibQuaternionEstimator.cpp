@@ -4,9 +4,8 @@
 using namespace accelmagiqlib;
 
 void QuaternionEstimator::idleUpdate()
-{    
-    // if (status==0)
-    if (!isSampling) // TODO: status
+{
+    if (!(status & ACCELMAGIQ_SAMPLING_IN_PROGRESS))
     {
         return;
     }
@@ -35,7 +34,6 @@ void QuaternionEstimator::idleUpdate()
     y = uBit.compass.getY();
     z = uBit.compass.getZ();
     filterMagne.update(x, y, z);
-
 }
 
 #if MICROBIT_CODAL
@@ -82,62 +80,22 @@ void QuaternionEstimator::setLowPassFilterAlpha(const double alpha)
 
 void QuaternionEstimator::resumeSampling()
 {
-    isSampling = true;
-    // if (isListen)
-    //     return;
-    // isListen = true;
-    // if (EventModel::defaultEventBus)
-    // {
-    //     EventModel::defaultEventBus->listen(
-    //         MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-    //         this, &QuaternionEstimator::accelerometerUpdateHandler,
-    //         MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-    //     EventModel::defaultEventBus->listen(
-    //         MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-    //         this, &QuaternionEstimator::magnetometerUpdateHandler,
-    //         MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-    // }
+    if (status == 0)
+    {
+        // register as idle component
+        fiber_add_idle_component(this);
+        status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
+        status |= MICROBIT_COMPONENT_RUNNING;
+    }
+
+    // acvitate 
+    status |= ACCELMAGIQ_SAMPLING_IN_PROGRESS;
 }
 
 void QuaternionEstimator::pauseSampling()
 {
-    isSampling = false;
-// #if MICROBIT_CODAL
-//     if (!isListen)
-//         return;
-//     isListen = false;
-//     if (EventModel::defaultEventBus)
-//     {
-//         EventModel::defaultEventBus->ignore(
-//             MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-//             this, &QuaternionEstimator::accelerometerUpdateHandler);
-//         EventModel::defaultEventBus->ignore(
-//             MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-//             this, &QuaternionEstimator::magnetometerUpdateHandler);
-//     }
-// #endif // MICROBIT_CODAL
-}
-
-void QuaternionEstimator::accelerometerUpdateHandler(MicroBitEvent e)
-{
-    if (!isSampling)
-        return;
-    // Update and normalize accelerometer data
-    double x = uBit.accelerometer.getX();
-    double y = uBit.accelerometer.getY();
-    double z = uBit.accelerometer.getZ();
-    filterAccel.update(x, y, z);
-}
-
-void QuaternionEstimator::magnetometerUpdateHandler(MicroBitEvent e)
-{
-    if (!isSampling)
-        return;
-    // Update and normalize magnetometer data
-    double x = uBit.compass.getX();
-    double y = uBit.compass.getY();
-    double z = uBit.compass.getZ();
-    filterMagne.update(x, y, z);
+    // deacvitate 
+    status &= ~ACCELMAGIQ_SAMPLING_IN_PROGRESS;
 }
 
 void QuaternionEstimator::setEstimateMethod(const int method)

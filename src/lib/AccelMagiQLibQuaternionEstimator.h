@@ -15,6 +15,8 @@
 #define CUSTOM_COMPONENT_ADDED_TO_IDLE 0x02
 #endif
 
+#define ACCELMAGIQ_SAMPLING_IN_PROGRESS 0x10
+
 namespace accelmagiqlib
 {
 
@@ -35,16 +37,10 @@ namespace accelmagiqlib
         QuaternionEstimator()
             : currentMethod(ESTIMATION_METHOD_FAMC),
               updateSampleTimestamp(0),
-              isListen(false), isSampling(false),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
             resumeSampling();
-            // register as idle component
-            // TODO: resumeSampling()/pauseSampling()
-            fiber_add_idle_component(this);
-            status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
-            status |= MICROBIT_COMPONENT_RUNNING;
         }
 
     private:
@@ -114,22 +110,6 @@ namespace accelmagiqlib
          * @brief Pause sampling sensor data.
          */
         void pauseSampling();
-
-    private:
-        bool isListen;   /**< listen/ignore defaultEventBus */
-        bool isSampling; /**< Indicates whether the sampling of sensor data is active */
-
-        /**
-         * @brief Callback for accelerometer updates.
-         * @param e The MicroBitEvent triggered by the accelerometer.
-         */
-        void accelerometerUpdateHandler(MicroBitEvent e);
-
-        /**
-         * @brief Callback for magnetometer updates.
-         * @param e The MicroBitEvent triggered by the magnetometer.
-         */
-        void magnetometerUpdateHandler(MicroBitEvent e);
 
     public:
         /**
