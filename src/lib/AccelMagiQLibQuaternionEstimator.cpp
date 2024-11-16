@@ -5,7 +5,7 @@ using namespace accelmagiqlib;
 
 void QuaternionEstimator::idleUpdate()
 {
-    if (!(status & ACCELMAGIQ_SAMPLING_IN_PROGRESS))
+    if (!isSampling)
     {
         return;
     }
@@ -87,15 +87,12 @@ void QuaternionEstimator::resumeSampling()
         status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
         status |= MICROBIT_COMPONENT_RUNNING;
     }
-
-    // acvitate 
-    status |= ACCELMAGIQ_SAMPLING_IN_PROGRESS;
+    isSampling = true;
 }
 
 void QuaternionEstimator::pauseSampling()
 {
-    // deacvitate 
-    status &= ~ACCELMAGIQ_SAMPLING_IN_PROGRESS;
+    isSampling = false;
 }
 
 void QuaternionEstimator::setEstimateMethod(const int method)

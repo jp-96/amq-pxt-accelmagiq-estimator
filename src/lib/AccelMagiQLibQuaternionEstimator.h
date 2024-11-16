@@ -15,8 +15,6 @@
 #define CUSTOM_COMPONENT_ADDED_TO_IDLE 0x02
 #endif
 
-#define ACCELMAGIQ_SAMPLING_IN_PROGRESS 0x10
-
 namespace accelmagiqlib
 {
 
@@ -36,7 +34,7 @@ namespace accelmagiqlib
          */
         QuaternionEstimator()
             : currentMethod(ESTIMATION_METHOD_FAMC),
-              updateSampleTimestamp(0),
+              updateSampleTimestamp(0), isSampling(false),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
@@ -44,6 +42,8 @@ namespace accelmagiqlib
         }
 
     private:
+        bool isSampling; /**< Indicates whether the sampling of sensor data is active */
+
         // next sample timestamp scheduled
         uint64_t updateSampleTimestamp;
 
