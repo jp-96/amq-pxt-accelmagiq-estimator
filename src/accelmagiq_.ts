@@ -44,8 +44,7 @@ namespace accelmagiq_ {
         sampling_ = true;
     }
 
-
-    //% shim=accelmagiq_::startSampling
+    //% shim=accelmagiq_::stopSampling
     export function stopSampling(): void {
         // for simulator
         sampling_ = false;
