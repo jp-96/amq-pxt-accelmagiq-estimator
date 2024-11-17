@@ -40,7 +40,7 @@ namespace accelmagiq {
     // Quaternion for simulator
     let q_ = [1.0, 0.0, 0.0, 0.0];
 
-    //% shim=accelmagiq::estimate
+    //% shim=accelmagiq::estimate_
     export function estimate_(): void {
         // for simulator
         let x = input.acceleration(Dimension.X);
