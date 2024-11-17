@@ -1,6 +1,6 @@
 {
     "name": "pxt-accelmagiq-estimator",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A Simplified Analytic Attitude Determination Algorithm Using Accelerometer and Magnetometer on micro:bit.",
     "dependencies": {
         "core": "*"
@@ -10,8 +10,7 @@
         "src/lib/AccelMagiQLibCoordinateSpaceFilter.cpp",
         "src/lib/AccelMagiQLibQuaternionEstimator.h",
         "src/lib/AccelMagiQLibQuaternionEstimator.cpp",
-        "src/accelmagiq_.cpp",
-        "src/accelmagiq_.ts",
+        "src/accelmagiq.cpp",
         "src/accelmagiq.ts",
         "enums.d.ts",
         "shims.d.ts",
@@ -27,5 +26,52 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "yotta": {
+        "config": {
+            "ACCELMAGIQ_ESTIMATE_METHOD": 1
+        },
+        "userConfigs": [
+            {
+                "description": "Disable Bluetooth Device Infomation Service",
+                "config": {
+                    "microbit-dal": {
+                        "bluetooth": {
+                            "device_info_service": 0
+                        }
+                    }
+                }
+            },
+            {
+                "description": "Disable Bluetooth Secure DFU Service",
+                "config": {
+                    "microbit-dal": {
+                        "bluetooth": {
+                            "dfu_service": 0
+                        }
+                    }
+                }
+            },
+            {
+                "description": "Disable Bluetooth Partial Flashing Service",
+                "config": {
+                    "microbit-dal": {
+                        "bluetooth": {
+                            "partial_flashing": 0
+                        }
+                    }
+                }
+            },
+            {
+                "description": "Reset Bluetooth Enabled",
+                "config": {
+                    "microbit-dal": {
+                        "bluetooth": {
+                            "enabled": 1
+                        }
+                    }
+                }
+            }
+        ]
+    }
 }

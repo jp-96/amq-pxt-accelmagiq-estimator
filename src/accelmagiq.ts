@@ -16,23 +16,6 @@
 //% weight=95 color=#4b0082 icon="\uf1d8"
 //% groups="['Quaternion', 'EulerAngles', 'Sensor', 'Service']"
 namespace accelmagiq {
-
-    /** 
-     * Define the EstimationMethod enum
-     */
-    export enum EstimationMethod {
-        /**
-         * FAMC estimation method
-         */
-        //% block="FAMC"
-        FAMC = 0,
-        /**
-         * SIMPLE estimation method
-         */
-        //% block="SIMPLE"
-        SIMPLE = 1
-    }
-
     /**
      * Define coordinate system enum
      */
@@ -54,6 +37,41 @@ namespace accelmagiq {
         RAW = 2,
     }
 
+    // Quaternion for simulator
+    let q_ = [1.0, 0.0, 0.0, 0.0];
+
+    //% shim=accelmagiq::estimate
+    export function estimate_(): void {
+        // for simulator
+        let x = input.acceleration(Dimension.X);
+        let y = input.acceleration(Dimension.Y);
+        let z = input.acceleration(Dimension.Z);
+        let norm = Math.sqrt(x * x + y * y + z * z)
+        if (0 < norm) {
+            norm = 1 / norm;
+            x = x * norm;
+            y = y * norm;
+            z = z * norm;
+        }
+        const ax = y;
+        const ay = x;
+        const az = -z;
+
+        let w = Math.sqrt((az + 1.0) / 2.0)
+        x = ay / (2.0 * w)
+        y = -ax / (2.0 * w)
+        z = 0.0
+        norm = Math.sqrt(w * w + x * x + y * y + z * z)
+        if (0 < norm) {
+            norm = 1 / norm;
+            w *= norm;
+            x *= norm;
+            y *= norm;
+            z *= norm;
+            q_ = [w, x, y, z];
+        }
+    }
+
     /**
      * Estimates the current quaternion.
      * @returns An array containing the quaternion components [w, x, y, z].
@@ -62,8 +80,32 @@ namespace accelmagiq {
     //% group="Sensor"
     //% weight=105
     export function estimate(): number[] {
-        accelmagiq_.estimate();
-        return [accelmagiq_.getW(), accelmagiq_.getX(), accelmagiq_.getY(), accelmagiq_.getZ()];
+        estimate_();
+        return [getW(), getX(), getY(), getZ()];
+    }
+
+    //% shim=accelmagiq::getW
+    export function getW(): number {
+        // for simulator
+        return q_[0];
+    }
+
+    //% shim=accelmagiq::getX
+    export function getX(): number {
+        // for simulator
+        return q_[1];
+    }
+
+    //% shim=accelmagiq::getY
+    export function getY(): number {
+        // for simulator
+        return q_[2];
+    }
+
+    //% shim=accelmagiq::getZ
+    export function getZ(): number {
+        // for simulator
+        return q_[3];
     }
 
     /**
@@ -72,8 +114,10 @@ namespace accelmagiq {
     //% block="set coordinate system %system"
     //% group="Sensor"
     //% weight=104
+    //% shim=accelmagiq::setCoordinateSystem
     export function setCoordinateSystem(system: CoordinateSystem) {
-        accelmagiq_.setCoordinateSystem(system);
+        // alpha for simulator
+        console.log("accelmagiq.setCoordinateSystem()");
     }
 
     /**
@@ -85,42 +129,10 @@ namespace accelmagiq {
     //% weight=103
     //% alpha.defl=0.3
     //% advanced=true
-    export function setAlpha(alpha: number): void {
-        accelmagiq_.setLowPassFilterAlpha(alpha);
+    //% shim=accelmagiq::setLowPassFilterAlpha
+    export function setLowPassFilterAlpha(alpha: number): void {
+        // for simulator
+        console.log("accelmagiq.setLowPassFilterAlpha()");
     }
 
-    /**
-     * Start sampling.
-     * @returns An array containing the quaternion components [w, x, y, z].
-     */
-    //% block="start sampling"
-    //% group="Sensor"
-    //% weight=102
-    //% advanced=true
-    export function startSampling(): void {
-        accelmagiq_.startSampling();
-    }
-
-    /**
-     * Stop sampling.
-     */
-    //% block="stop sampling"
-    //% group="Sensor"
-    //% weight=101
-    //% advanced=true
-    export function stopSampling(): void {
-        accelmagiq_.stopSampling();
-    }
-
-    /**
-     * Sets the estimation method.
-     */
-    //% block="set estimate method %method"
-    //% group="Sensor"
-    //% weight=100
-    //% advanced=true
-    export function setEstimateMethod(method: EstimationMethod): void {
-        accelmagiq_.setEstimateMethod(method);
-    }
-    
 }

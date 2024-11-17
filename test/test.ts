@@ -12,9 +12,7 @@ input.onButtonPressed(Button.A, function () {
         `)
 })
 input.onButtonPressed(Button.AB, function () {
-    accelmagiq.stopSampling()
     input.calibrateCompass()
-    accelmagiq.startSampling()
 })
 input.onButtonPressed(Button.B, function () {
     accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.TILT)

@@ -3,6 +3,50 @@
 
 using namespace accelmagiqlib;
 
+void QuaternionEstimator::idleUpdate()
+{
+    // Schedule our next sample.
+    uint64_t currentTime = system_timer_current_time_us();
+    if (currentTime < updateSampleTimestamp)
+    {
+        return;
+    }
+    updateSampleTimestamp = currentTime + uBit.accelerometer.getPeriod() * 1000;
+
+    // Do sampling
+    double x;
+    double y;
+    double z;
+
+    // Update and normalize accelerometer data
+    x = uBit.accelerometer.getX();
+    y = uBit.accelerometer.getY();
+    z = uBit.accelerometer.getZ();
+    filterAccel.update(x, y, z);
+
+    // Update and normalize magnetometer data
+    x = uBit.compass.getX();
+    y = uBit.compass.getY();
+    z = uBit.compass.getZ();
+    filterMagne.update(x, y, z);
+}
+
+#if MICROBIT_CODAL
+
+void QuaternionEstimator::idleCallback()
+{
+    idleUpdate();
+}
+
+#else // MICROBIT_CODAL
+
+void QuaternionEstimator::idleTick()
+{
+    idleUpdate();
+}
+
+#endif // MICROBIT_CODAL
+
 double QuaternionEstimator::getW() const
 {
     return qw;
@@ -29,90 +73,38 @@ void QuaternionEstimator::setLowPassFilterAlpha(const double alpha)
     filterMagne.setAlpha(alpha);
 }
 
-void QuaternionEstimator::resumeSampling()
-{
-    isSampling = true;
-    if (isListen)
-        return;
-    isListen = true;
-    if (EventModel::defaultEventBus)
-    {
-        EventModel::defaultEventBus->listen(
-            MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::accelerometerUpdateHandler,
-            MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-        EventModel::defaultEventBus->listen(
-            MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::magnetometerUpdateHandler,
-            MESSAGE_BUS_LISTENER_DROP_IF_BUSY /** MAY BE DROPPED */);
-    }
-}
-
-void QuaternionEstimator::pauseSampling()
-{
-    isSampling = false;
-#if MICROBIT_CODAL
-    if (!isListen)
-        return;
-    isListen = false;
-    if (EventModel::defaultEventBus)
-    {
-        EventModel::defaultEventBus->ignore(
-            MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::accelerometerUpdateHandler);
-        EventModel::defaultEventBus->ignore(
-            MICROBIT_ID_COMPASS, MICROBIT_COMPASS_EVT_DATA_UPDATE,
-            this, &QuaternionEstimator::magnetometerUpdateHandler);
-    }
-#endif // MICROBIT_CODAL
-}
-
-void QuaternionEstimator::accelerometerUpdateHandler(MicroBitEvent e)
-{
-    if (!isSampling)
-        return;
-    // Update and normalize accelerometer data
-    double x = uBit.accelerometer.getX();
-    double y = uBit.accelerometer.getY();
-    double z = uBit.accelerometer.getZ();
-    filterAccel.update(x, y, z);
-}
-
-void QuaternionEstimator::magnetometerUpdateHandler(MicroBitEvent e)
-{
-    if (!isSampling)
-        return;
-    // Update and normalize magnetometer data
-    double x = uBit.compass.getX();
-    double y = uBit.compass.getY();
-    double z = uBit.compass.getZ();
-    filterMagne.update(x, y, z);
-}
-
-void QuaternionEstimator::setEstimateMethod(const int method)
-{
-    currentMethod = method;
-}
-
 void QuaternionEstimator::setCoordinateSystem(const int system)
 {
     filterAccel.setCoordinateSystem(system);
     filterMagne.setCoordinateSystem(system);
 }
 
+#if ACCELMAGIQ_ESTIMATE_METHOD == ACCELMAGIQ_ESTIMATE_METHOD_SIMPLE
 void QuaternionEstimator::estimate()
 {
-    if (ESTIMATION_METHOD_FAMC == currentMethod)
+    const double ax = filterAccel.getCoordX();
+    const double ay = filterAccel.getCoordY();
+    const double az = filterAccel.getCoordZ();
+
+    // Accelerration Only
+    double w = std::sqrt((az + 1.0) / 2.0);
+    double x = ay / (2.0 * w);
+    double y = -ax / (2.0 * w);
+    double z = 0.0;
+
+    // normalize
+    double norm = sqrt(w * w + x * x + y * y + z * z);
+    if (0 < norm)
     {
-        estimateFamc();
-    }
-    else
-    {
-        estimateSimple();
+        norm = 1 / norm;
+        qw = w * norm;
+        qx = x * norm;
+        qy = y * norm;
+        qz = z * norm;
     }
 }
-
-void QuaternionEstimator::estimateFamc()
+#elif ACCELMAGIQ_ESTIMATE_METHOD == ACCELMAGIQ_ESTIMATE_METHOD_FAMC
+void QuaternionEstimator::estimate()
 {
     const double ax = filterAccel.getCoordX();
     const double ay = filterAccel.getCoordY();
@@ -187,27 +179,6 @@ void QuaternionEstimator::estimateFamc()
         qz = z * norm;
     }
 }
-
-void QuaternionEstimator::estimateSimple()
-{
-    const double ax = filterAccel.getCoordX();
-    const double ay = filterAccel.getCoordY();
-    const double az = filterAccel.getCoordZ();
-
-    // Accelerration Only
-    double w = std::sqrt((az + 1.0) / 2.0);
-    double x = ay / (2.0 * w);
-    double y = -ax / (2.0 * w);
-    double z = 0.0;
-
-    // normalize
-    double norm = sqrt(w * w + x * x + y * y + z * z);
-    if (0 < norm)
-    {
-        norm = 1 / norm;
-        qw = w * norm;
-        qx = x * norm;
-        qy = y * norm;
-        qz = z * norm;
-    }
-}
+#else
+#error "Invalid ACCELMAGIQ_ESTIMATE_METHOD"
+#endif
