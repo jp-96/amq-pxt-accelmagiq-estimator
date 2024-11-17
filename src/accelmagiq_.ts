@@ -1,4 +1,47 @@
-namespace accelmagiq_ {
+/**
+ * A Simplified Analytic Attitude Determination Algorithm
+ * using Accelerometer and Magnetometer on micro:bit.
+ * 
+ * It's like magic! This algorithm turns raw data into accurate and efficient quaternion estimations,
+ * transforming your projects and making you go, "Wow!" Using the handy micro:bit, it feels like trying
+ * out quaternions is pure magic. AccelMagiQ brings a touch of enchantment to the technical world.
+ * We hope this helps you in your learning journey and sparks your curiosity about the fascinating
+ * world of quaternions.
+ * 
+ * "AccelMagiQ" refers to this amazing algorithm that combines accelerometer and magnetometer data to
+ * create precise quaternion calculations. It's a playful blend of 'acceleration', 'magnetometer', and 'magic' with
+ * quaternions ('Q'), making advanced concepts seem like magic!
+ */
+//% block="AccelMagiQ"
+//% weight=95 color=#4b0082 icon="\uf1d8"
+//% groups="['Quaternion', 'EulerAngles', 'Sensor', 'Service']"
+namespace accelmagiq {
+    /**
+     * Define coordinate system enum
+     */
+    export enum CoordinateSystem {
+        /**
+         * BASIC: a non-tilt compensated bearing of the device (North: logo mark)
+         */
+        //% block="BASIC"
+        BASIC = 0,
+        /**
+         * TILT: a tilt compensated bearing of the device (North: back side)
+         */
+        //% block="TILT"
+        TILT = 1,
+        /**
+         * RAW: a raw coordinate system (North: A-button, upside-down)
+         */
+        //% block="RAW"
+        RAW = 2,
+    }
+
+    // coordinateSystem for simulator
+    let coordinateSystem_ = CoordinateSystem.BASIC;
+    
+    // alpha for simulator
+    let alpha_ = 1.0;
 
     // Accelerration (normalized) for simulator
     let rawAx = 1.0;
@@ -7,24 +50,6 @@ namespace accelmagiq_ {
 
     // Quaternion for simulator
     let q_ = [1.0, 0.0, 0.0, 0.0];
-
-    // coordinateSystem for simulator
-    let coordinateSystem_ = 0;
-
-    //% shim=accelmagiq_::setCoordinateSystem
-    export function setCoordinateSystem(system: number) {
-        // alpha for simulator
-        coordinateSystem_ = system;
-    }
-
-    // alpha for simulator
-    let alpha_ = 1.0;
-
-    //% shim=accelmagiq_::setLowPassFilterAlpha
-    export function setLowPassFilterAlpha(alpha: number): void {
-        // for simulator
-        alpha_ = alpha;
-    }
 
     // for simulator
     function readAcceleration(): void {
@@ -42,7 +67,7 @@ namespace accelmagiq_ {
     }
 
     //% shim=accelmagiq_::estimate
-    export function estimate(): void {
+    export function estimate_(): void {
         // for simulator
         readAcceleration();
         const ax = rawAy;
@@ -62,6 +87,18 @@ namespace accelmagiq_ {
             z *= norm;
             q_ = [w, x, y, z];
         }
+    }
+
+    /**
+     * Estimates the current quaternion.
+     * @returns An array containing the quaternion components [w, x, y, z].
+     */
+    //% block="estimate quaternion"
+    //% group="Sensor"
+    //% weight=105
+    export function estimate(): number[] {
+        estimate_();
+        return [getW(), getX(), getY(), getZ()];
     }
 
     //% shim=accelmagiq_::getW
@@ -86,6 +123,33 @@ namespace accelmagiq_ {
     export function getZ(): number {
         // for simulator
         return q_[3];
+    }
+
+    /**
+     * Sets the coordinate system.
+     */
+    //% block="set coordinate system %system"
+    //% group="Sensor"
+    //% weight=104
+    //% shim=accelmagiq_::setCoordinateSystem
+    export function setCoordinateSystem(system: CoordinateSystem) {
+        // alpha for simulator
+        coordinateSystem_ = system;
+    }
+
+    /**
+     * Sets the alpha value for the low-pass filter.
+     * @param alpha The new alpha value (between 0.0 and 1.0). Default is 0.3.
+     */
+    //% block="set alpha %alpha"
+    //% group="Sensor"
+    //% weight=103
+    //% alpha.defl=0.3
+    //% advanced=true
+    //% shim=accelmagiq_::setLowPassFilterAlpha
+    export function setAlpha(alpha: number): void {
+        // for simulator
+        alpha_ = alpha;
     }
 
 }
