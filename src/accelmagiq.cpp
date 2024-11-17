@@ -3,7 +3,7 @@
 
 using namespace accelmagiqlib;
 
-namespace accelmagiq_
+namespace accelmagiq
 {
 
     static QuaternionEstimator *_pQuaternionEstimator = nullptr;
@@ -24,24 +24,6 @@ namespace accelmagiq_
     void setLowPassFilterAlpha(TNumber alpha)
     {
         instance().setLowPassFilterAlpha(toDouble(alpha));
-    }
-
-    //%
-    void setEstimateMethod(int method)
-    {
-        instance().setEstimateMethod(method);
-    }
-
-    //%
-    void startSampling()
-    {
-        instance().resumeSampling();
-    }
-
-    //%
-    void stopSampling()
-    {
-        instance().pauseSampling();
     }
 
     //%

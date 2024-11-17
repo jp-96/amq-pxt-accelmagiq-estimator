@@ -4,24 +4,15 @@
 #include "pxt.h"
 #include "AccelMagiQLibCoordinateSpaceFilter.h"
 
-/**
- * Status flags
- * Universal flags used as part of the status field
- */
-#ifndef MICROBIT_COMPONENT_RUNNING
-#define MICROBIT_COMPONENT_RUNNING 0x01
-#endif
-#ifndef CUSTOM_COMPONENT_ADDED_TO_IDLE
-#define CUSTOM_COMPONENT_ADDED_TO_IDLE 0x02
+// Algorithm used for estimation
+#define ACCELMAGIQ_ESTIMATE_METHOD_SIMPLE 0
+#define ACCELMAGIQ_ESTIMATE_METHOD_FAMC   1
+#ifndef ACCELMAGIQ_ESTIMATE_METHOD
+#define ACCELMAGIQ_ESTIMATE_METHOD ACCELMAGIQ_ESTIMATE_METHOD_FAMC
 #endif
 
 namespace accelmagiqlib
 {
-
-    // The method identifier to use for estimation: 0-FAMC, 1-SIMPLE
-    const int ESTIMATION_METHOD_FAMC = 0;   /**< FAMC method */
-    const int ESTIMATION_METHOD_SIMPLE = 1; /**< Simple method */
-
     /**
      * @class QuaternionEstimator
      * @brief This class estimates quaternion orientation based on accelerometer and magnetometer data.
@@ -33,12 +24,11 @@ namespace accelmagiqlib
          * @brief Constructor to initialize the QuaternionEstimator.
          */
         QuaternionEstimator()
-            : currentMethod(ESTIMATION_METHOD_FAMC),
-              updateSampleTimestamp(0),
+            : updateSampleTimestamp(0),
               filterAccel(), filterMagne(),
               qw(1.0), qx(0.0), qy(0.0), qz(0.0)
         {
-            resumeSampling();
+            fiber_add_idle_component(this);
         }
 
     private:
@@ -99,23 +89,7 @@ namespace accelmagiqlib
          */
         void setLowPassFilterAlpha(const double alpha);
 
-        /**
-         * @brief Resume sampling sensor data.
-         */
-        void resumeSampling();
-
-        /**
-         * @brief Pause sampling sensor data.
-         */
-        void pauseSampling();
-
     public:
-        /**
-         * @brief Set the method used for quaternion estimation.
-         * @param method The method identifier to use for estimation: 0-FAMC, 1-SIMPLE.
-         */
-        void setEstimateMethod(const int method);
-
         /**
          * @brief Sets the coordinate system for the filter.
          * @param system The coordinate system to use:
@@ -133,19 +107,6 @@ namespace accelmagiqlib
         void estimate();
 
     private:
-        /**
-         * @brief Estimate the quaternion using the Fast Accelerometer-Magnetometer Combination (FAMC) algorithm.
-         */
-        void estimateFamc();
-
-        /**
-         * @brief Estimate the quaternion using a simple method.
-         */
-        void estimateSimple();
-
-        // Estimation method
-        int currentMethod; /**< The currently selected method identifier to use for estimation: 0-FAMC, 1-SIMPLE */
-
         // Acceleration filter
         CoordinateSpaceFilter filterAccel; /**< Filter for accelerometer data */
 
