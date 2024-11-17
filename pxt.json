@@ -30,48 +30,6 @@
     "yotta": {
         "config": {
             "ACCELMAGIQ_ESTIMATE_METHOD": 1
-        },
-        "userConfigs": [
-            {
-                "description": "Disable Bluetooth Device Infomation Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "device_info_service": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Disable Bluetooth Secure DFU Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "dfu_service": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Disable Bluetooth Partial Flashing Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "partial_flashing": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Reset Bluetooth Enabled",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "enabled": 1
-                        }
-                    }
-                }
-            }
-        ]
+        }
     }
 }
