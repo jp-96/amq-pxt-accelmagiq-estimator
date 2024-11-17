@@ -6,8 +6,8 @@
   "accelmagiq.CoordinateSystem.TILT": "TILT: a tilt compensated bearing of the device (North: back side)",
   "accelmagiq.CoordinateSystem.TILT|block": "TILT",
   "accelmagiq.estimate|block": "estimate quaternion",
-  "accelmagiq.setAlpha|block": "set alpha %alpha",
   "accelmagiq.setCoordinateSystem|block": "set coordinate system %system",
+  "accelmagiq.setLowPassFilterAlpha|block": "set alpha %alpha",
   "accelmagiq|block": "AccelMagiQ",
   "{id:category}Accelmagiq": "Accelmagiq",
   "{id:group}Sensor": "Sensor"
