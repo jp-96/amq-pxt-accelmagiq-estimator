@@ -37,48 +37,31 @@ namespace accelmagiq {
         RAW = 2,
     }
 
-    // coordinateSystem for simulator
-    let coordinateSystem_ = CoordinateSystem.BASIC;
-    
-    // alpha for simulator
-    let alpha_ = 1.0;
-
-    // Accelerration (normalized) for simulator
-    let rawAx = 1.0;
-    let rawAy = 0.0;
-    let rawAz = 0.0;
-
     // Quaternion for simulator
     let q_ = [1.0, 0.0, 0.0, 0.0];
 
-    // for simulator
-    function readAcceleration(): void {
-        const x = input.acceleration(Dimension.X);
-        const y = input.acceleration(Dimension.Y);
-        const z = input.acceleration(Dimension.Z);
-
+    //% shim=accelmagiq::estimate
+    export function estimate_(): void {
+        // for simulator
+        let x = input.acceleration(Dimension.X);
+        let y = input.acceleration(Dimension.Y);
+        let z = input.acceleration(Dimension.Z);
         let norm = Math.sqrt(x * x + y * y + z * z)
         if (0 < norm) {
             norm = 1 / norm;
-            rawAx = x * norm;
-            rawAy = y * norm;
-            rawAz = z * norm;
+            x = x * norm;
+            y = y * norm;
+            z = z * norm;
         }
-    }
-
-    //% shim=accelmagiq_::estimate
-    export function estimate_(): void {
-        // for simulator
-        readAcceleration();
-        const ax = rawAy;
-        const ay = rawAx;
-        const az = -rawAz;
+        const ax = y;
+        const ay = x;
+        const az = -z;
 
         let w = Math.sqrt((az + 1.0) / 2.0)
-        let x = ay / (2.0 * w)
-        let y = -ax / (2.0 * w)
-        let z = 0.0
-        let norm = Math.sqrt(w * w + x * x + y * y + z * z)
+        x = ay / (2.0 * w)
+        y = -ax / (2.0 * w)
+        z = 0.0
+        norm = Math.sqrt(w * w + x * x + y * y + z * z)
         if (0 < norm) {
             norm = 1 / norm;
             w *= norm;
@@ -101,25 +84,25 @@ namespace accelmagiq {
         return [getW(), getX(), getY(), getZ()];
     }
 
-    //% shim=accelmagiq_::getW
+    //% shim=accelmagiq::getW
     export function getW(): number {
         // for simulator
         return q_[0];
     }
 
-    //% shim=accelmagiq_::getX
+    //% shim=accelmagiq::getX
     export function getX(): number {
         // for simulator
         return q_[1];
     }
 
-    //% shim=accelmagiq_::getY
+    //% shim=accelmagiq::getY
     export function getY(): number {
         // for simulator
         return q_[2];
     }
 
-    //% shim=accelmagiq_::getZ
+    //% shim=accelmagiq::getZ
     export function getZ(): number {
         // for simulator
         return q_[3];
@@ -131,10 +114,10 @@ namespace accelmagiq {
     //% block="set coordinate system %system"
     //% group="Sensor"
     //% weight=104
-    //% shim=accelmagiq_::setCoordinateSystem
+    //% shim=accelmagiq::setCoordinateSystem
     export function setCoordinateSystem(system: CoordinateSystem) {
         // alpha for simulator
-        coordinateSystem_ = system;
+        console.log("accelmagiq.setCoordinateSystem()");
     }
 
     /**
@@ -146,10 +129,10 @@ namespace accelmagiq {
     //% weight=103
     //% alpha.defl=0.3
     //% advanced=true
-    //% shim=accelmagiq_::setLowPassFilterAlpha
-    export function setAlpha(alpha: number): void {
+    //% shim=accelmagiq::setLowPassFilterAlpha
+    export function setLowPassFilterAlpha(alpha: number): void {
         // for simulator
-        alpha_ = alpha;
+        console.log("accelmagiq.setLowPassFilterAlpha()");
     }
 
 }

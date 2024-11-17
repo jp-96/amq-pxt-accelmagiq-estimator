@@ -3,7 +3,7 @@
 
 using namespace accelmagiqlib;
 
-namespace accelmagiq_
+namespace accelmagiq
 {
 
     static QuaternionEstimator *_pQuaternionEstimator = nullptr;

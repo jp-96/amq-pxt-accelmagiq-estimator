@@ -53,21 +53,11 @@
                 }
             },
             {
-                "description": "Disable Bluetooth micro:bit Partial Flashing Service",
+                "description": "Disable Bluetooth Partial Flashing Service",
                 "config": {
                     "microbit-dal": {
                         "bluetooth": {
                             "partial_flashing": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Disable Bluetooth micro:bit Event Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "event_service": 0
                         }
                     }
                 }
