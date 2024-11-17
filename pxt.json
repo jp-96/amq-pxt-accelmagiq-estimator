@@ -10,8 +10,8 @@
         "src/lib/AccelMagiQLibCoordinateSpaceFilter.cpp",
         "src/lib/AccelMagiQLibQuaternionEstimator.h",
         "src/lib/AccelMagiQLibQuaternionEstimator.cpp",
-        "src/accelmagiq_.cpp",
-        "src/accelmagiq_.ts",
+        "src/accelmagiq.cpp",
+        "src/accelmagiq.ts",
         "enums.d.ts",
         "shims.d.ts",
         "README.md"
