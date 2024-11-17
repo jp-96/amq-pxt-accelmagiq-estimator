@@ -27,7 +27,7 @@ namespace accelmagiq
     }
 
     //%
-    void estimate()
+    void estimate_()
     {
         instance().estimate();
     }
