@@ -27,24 +27,6 @@ namespace accelmagiq_
     }
 
     //%
-    void setEstimateMethod(int method)
-    {
-        instance().setEstimateMethod(method);
-    }
-
-    //%
-    void startSampling()
-    {
-        instance().resumeSampling();
-    }
-
-    //%
-    void stopSampling()
-    {
-        instance().pauseSampling();
-    }
-
-    //%
     void estimate()
     {
         instance().estimate();

@@ -26,30 +26,6 @@ namespace accelmagiq_ {
         alpha_ = alpha;
     }
 
-    // method for simulator
-    let method_ = 0;
-
-    //% shim=accelmagiq_::setEstimateMethod
-    export function setEstimateMethod(method: number): void {
-        // for simulator
-        method_ = method;
-    }
-
-    // sampling for simulator
-    let sampling_ = true;   // auto start
-
-    //% shim=accelmagiq_::startSampling
-    export function startSampling(): void {
-        // for simulator
-        sampling_ = true;
-    }
-
-    //% shim=accelmagiq_::stopSampling
-    export function stopSampling(): void {
-        // for simulator
-        sampling_ = false;
-    }
-
     // for simulator
     function readAcceleration(): void {
         const x = input.acceleration(Dimension.X);
@@ -68,9 +44,7 @@ namespace accelmagiq_ {
     //% shim=accelmagiq_::estimate
     export function estimate(): void {
         // for simulator
-        if (sampling_) {
-            readAcceleration();
-        }
+        readAcceleration();
         const ax = rawAy;
         const ay = rawAx;
         const az = -rawAz;

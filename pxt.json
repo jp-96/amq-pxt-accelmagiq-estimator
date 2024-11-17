@@ -27,5 +27,10 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "yotta": {
+        "config": {
+            "ACCELMAGIQ_ESTIMATE_METHOD": 1
+        }
+    }
 }

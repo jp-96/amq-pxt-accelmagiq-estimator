@@ -73,59 +73,38 @@ void QuaternionEstimator::setLowPassFilterAlpha(const double alpha)
     filterMagne.setAlpha(alpha);
 }
 
-void QuaternionEstimator::resumeSampling()
-{
-    if (status == 0)
-    {
-        // register as idle component
-#if MICROBIT_CODAL
-        addComponent();
-#else  // MICROBIT_CODAL
-        fiber_add_idle_component(this);
-#endif // MICROBIT_CODAL
-        status |= MICROBIT_COMPONENT_RUNNING;
-        status |= CUSTOM_COMPONENT_ADDED_TO_IDLE;
-    }
-}
-
-void QuaternionEstimator::pauseSampling()
-{
-    if (status != 0)
-    {
-        status = 0;
-        // unregister as idle component
-#if MICROBIT_CODAL
-        removeComponent();
-#else  // MICROBIT_CODAL
-        fiber_remove_idle_component(this);
-#endif // MICROBIT_CODAL
-    }
-}
-
-void QuaternionEstimator::setEstimateMethod(const int method)
-{
-    currentMethod = method;
-}
-
 void QuaternionEstimator::setCoordinateSystem(const int system)
 {
     filterAccel.setCoordinateSystem(system);
     filterMagne.setCoordinateSystem(system);
 }
 
+#if ACCELMAGIQ_ESTIMATE_METHOD == ACCELMAGIQ_ESTIMATE_METHOD_SIMPLE
 void QuaternionEstimator::estimate()
 {
-    if (ESTIMATION_METHOD_FAMC == currentMethod)
+    const double ax = filterAccel.getCoordX();
+    const double ay = filterAccel.getCoordY();
+    const double az = filterAccel.getCoordZ();
+
+    // Accelerration Only
+    double w = std::sqrt((az + 1.0) / 2.0);
+    double x = ay / (2.0 * w);
+    double y = -ax / (2.0 * w);
+    double z = 0.0;
+
+    // normalize
+    double norm = sqrt(w * w + x * x + y * y + z * z);
+    if (0 < norm)
     {
-        estimateFamc();
-    }
-    else
-    {
-        estimateSimple();
+        norm = 1 / norm;
+        qw = w * norm;
+        qx = x * norm;
+        qy = y * norm;
+        qz = z * norm;
     }
 }
-
-void QuaternionEstimator::estimateFamc()
+#elif ACCELMAGIQ_ESTIMATE_METHOD == ACCELMAGIQ_ESTIMATE_METHOD_FAMC
+void QuaternionEstimator::estimate()
 {
     const double ax = filterAccel.getCoordX();
     const double ay = filterAccel.getCoordY();
@@ -200,27 +179,6 @@ void QuaternionEstimator::estimateFamc()
         qz = z * norm;
     }
 }
-
-void QuaternionEstimator::estimateSimple()
-{
-    const double ax = filterAccel.getCoordX();
-    const double ay = filterAccel.getCoordY();
-    const double az = filterAccel.getCoordZ();
-
-    // Accelerration Only
-    double w = std::sqrt((az + 1.0) / 2.0);
-    double x = ay / (2.0 * w);
-    double y = -ax / (2.0 * w);
-    double z = 0.0;
-
-    // normalize
-    double norm = sqrt(w * w + x * x + y * y + z * z);
-    if (0 < norm)
-    {
-        norm = 1 / norm;
-        qw = w * norm;
-        qx = x * norm;
-        qy = y * norm;
-        qz = z * norm;
-    }
-}
+#else
+#error "Invalid ACCELMAGIQ_ESTIMATE_METHOD"
+#endif

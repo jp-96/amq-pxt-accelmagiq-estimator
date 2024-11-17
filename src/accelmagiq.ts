@@ -17,22 +17,6 @@
 //% groups="['Quaternion', 'EulerAngles', 'Sensor', 'Service']"
 namespace accelmagiq {
 
-    /** 
-     * Define the EstimationMethod enum
-     */
-    export enum EstimationMethod {
-        /**
-         * FAMC estimation method
-         */
-        //% block="FAMC"
-        FAMC = 0,
-        /**
-         * SIMPLE estimation method
-         */
-        //% block="SIMPLE"
-        SIMPLE = 1
-    }
-
     /**
      * Define coordinate system enum
      */
@@ -89,38 +73,4 @@ namespace accelmagiq {
         accelmagiq_.setLowPassFilterAlpha(alpha);
     }
 
-    /**
-     * Start sampling.
-     * @returns An array containing the quaternion components [w, x, y, z].
-     */
-    //% block="start sampling"
-    //% group="Sensor"
-    //% weight=102
-    //% advanced=true
-    export function startSampling(): void {
-        accelmagiq_.startSampling();
-    }
-
-    /**
-     * Stop sampling.
-     */
-    //% block="stop sampling"
-    //% group="Sensor"
-    //% weight=101
-    //% advanced=true
-    export function stopSampling(): void {
-        accelmagiq_.stopSampling();
-    }
-
-    /**
-     * Sets the estimation method.
-     */
-    //% block="set estimate method %method"
-    //% group="Sensor"
-    //% weight=100
-    //% advanced=true
-    export function setEstimateMethod(method: EstimationMethod): void {
-        accelmagiq_.setEstimateMethod(method);
-    }
-    
 }
