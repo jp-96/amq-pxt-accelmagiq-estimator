@@ -35,6 +35,10 @@ This repository can be added as an **extension** in MakeCode.
 * click on **Extensions** under the gearwheel menu
 * search for **https://github.com/jp-96/amq-pxt-accelmagiq-estimator** and import
 
+```text
+https://github.com/jp-96/amq-pxt-accelmagiq-estimator
+```
+
 ## Downloaded HEX file to Use as Extension
 
 Released HEX file can be imported as an **extension** in MakeCode.
@@ -51,26 +55,30 @@ Released HEX file can be imported as an **extension** in MakeCode.
 
 ```blocks
 
+let estimated: number[] = []
 if (input.buttonIsPressed(Button.B)) {
     input.calibrateCompass()
 }
 accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.BASIC)
 accelmagiq.setLowPassFilterAlpha(0.3)
 basic.forever(function () {
-    accelmagiq.notifyData(accelmagiq.estimate())
+    estimated = accelmagiq.estimate()
+    accelmagiq.notifyData(estimated)
 })
 
 ```
 
 ```js
 
+let estimated: number[] = []
 if (input.buttonIsPressed(Button.B)) {
     input.calibrateCompass()
 }
 accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.BASIC)
 accelmagiq.setLowPassFilterAlpha(0.3)
 basic.forever(function () {
-    accelmagiq.notifyData(accelmagiq.estimate())
+    estimated = accelmagiq.estimate()
+    accelmagiq.notifyData(estimated)
 })
 
 ```
