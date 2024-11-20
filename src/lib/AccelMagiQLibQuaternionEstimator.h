@@ -2,18 +2,8 @@
 #define ACCELMAGIQLIB_QUATERNIONESTIMATOR_H
 
 #include "pxt.h"
+#include "AccelMagiQLibConfig.h"
 #include "AccelMagiQLibCoordinateSpaceFilter.h"
-
-// Algorithm used for estimation
-#define ACCELMAGIQ_ESTIMATE_METHOD_SIMPLE 0
-#define ACCELMAGIQ_ESTIMATE_METHOD_FAMC   1
-#ifndef ACCELMAGIQ_ESTIMATE_METHOD
-#ifdef YOTTA_CFG_ACCELMAGIQ_ESTIMATE_METHOD
-#define ACCELMAGIQ_ESTIMATE_METHOD YOTTA_CFG_ACCELMAGIQ_ESTIMATE_METHOD
-#else
-#define ACCELMAGIQ_ESTIMATE_METHOD ACCELMAGIQ_ESTIMATE_METHOD_FAMC
-#endif
-#endif
 
 namespace accelmagiqlib
 {
