@@ -21,20 +21,20 @@ namespace accelmagiq {
      */
     export enum CoordinateSystem {
         /**
+         * RAW: a raw coordinate system (North: A-button, upside-down)
+         */
+        //% block="RAW"
+        RAW = 0,
+        /**
          * BASIC: a non-tilt compensated bearing of the device (North: logo mark)
          */
         //% block="BASIC"
-        BASIC = 0,
+        BASIC = 1,
         /**
          * TILT: a tilt compensated bearing of the device (North: back side)
          */
         //% block="TILT"
-        TILT = 1,
-        /**
-         * RAW: a raw coordinate system (North: A-button, upside-down)
-         */
-        //% block="RAW"
-        RAW = 2,
+        TILT = 2,
     }
 
     // Quaternion for simulator
@@ -114,6 +114,7 @@ namespace accelmagiq {
     //% block="set coordinate system %system"
     //% group="Sensor"
     //% weight=104
+    //% system.defl=1
     //% shim=accelmagiq::setCoordinateSystem
     export function setCoordinateSystem(system: CoordinateSystem) {
         // alpha for simulator

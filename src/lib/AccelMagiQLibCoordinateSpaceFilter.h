@@ -1,15 +1,11 @@
 #ifndef ACCELMAGIQLIB_COORDINATESPACEFILTER_H
 #define ACCELMAGIQLIB_COORDINATESPACEFILTER_H
 
+#include "AccelMagiQLibConfig.h"
 #include <cmath>
 
 namespace accelmagiqlib
 {
-
-    // Define coordinate system constants
-    const int COORDINATE_SYSTEM_BASIC = 0; /**< BASIC: a non-tilt compensated bearing of the device (North: logo mark) */
-    const int COORDINATE_SYSTEM_TILT = 1;  /**< TILT: a tilt compensated bearing of the device (North: back side) */
-    const int COORDINATE_SYSTEM_RAW = 2;   /**< RAW: a raw coordinate system (North: A-button, upside-down) */
 
     /**
      * @class CoordinateSpaceFilter
@@ -21,15 +17,15 @@ namespace accelmagiqlib
         int currentSystem; /**< The current coordinate system being used */
 
         // Low-pass filter parameters
-        double alphaX;          /**< Alpha value for low-pass filter on X-axis */
-        double oneMinusAlphaX;  /**< Precomputed (1.0 - alphaX) value */
-        double alphaY;          /**< Alpha value for low-pass filter on Y-axis */
-        double oneMinusAlphaY;  /**< Precomputed (1.0 - alphaY) value */
-        double alphaZ;          /**< Alpha value for low-pass filter on Z-axis */
-        double oneMinusAlphaZ;  /**< Precomputed (1.0 - alphaZ) value */
-        double prevX;           /**< Previous filtered value for X-axis */
-        double prevY;           /**< Previous filtered value for Y-axis */
-        double prevZ;           /**< Previous filtered value for Z-axis */
+        double alphaX;         /**< Alpha value for low-pass filter on X-axis */
+        double oneMinusAlphaX; /**< Precomputed (1.0 - alphaX) value */
+        double alphaY;         /**< Alpha value for low-pass filter on Y-axis */
+        double oneMinusAlphaY; /**< Precomputed (1.0 - alphaY) value */
+        double alphaZ;         /**< Alpha value for low-pass filter on Z-axis */
+        double oneMinusAlphaZ; /**< Precomputed (1.0 - alphaZ) value */
+        double prevX;          /**< Previous filtered value for X-axis */
+        double prevY;          /**< Previous filtered value for Y-axis */
+        double prevZ;          /**< Previous filtered value for Z-axis */
 
         // Normalized coordinates
         double rawX; /**< Normalized X coordinate */
@@ -37,8 +33,6 @@ namespace accelmagiqlib
         double rawZ; /**< Normalized Z coordinate */
 
     public:
-        static constexpr double DEFAULT_ALPHA = 0.3; /**< Default alpha value for the low-pass filter */
-
         /**
          * Constructor to initialize the CoordinateSpaceFilter with initial coordinates
          * and an optional alpha value for the low-pass filter.
@@ -47,13 +41,14 @@ namespace accelmagiqlib
          * @param y Initial Y coordinate (default is 0.0).
          * @param z Initial Z coordinate (default is 0.0).
          * @param system The coordinate system to use:
-         *               - COORDINATE_SYSTEM_BASIC: 0 (default)
-         *               - COORDINATE_SYSTEM_TILT: 1
-         *               - COORDINATE_SYSTEM_RAW: 2
-         * @param alpha Alpha value for the low-pass filter (default is 0.3).
+         *               - COORDINATE_SYSTEM_RAW: 0
+         *               - COORDINATE_SYSTEM_BASIC: 1
+         *               - COORDINATE_SYSTEM_TILT: 2
+         * @param alpha Alpha value for the low-pass filter.
          */
         CoordinateSpaceFilter(const double x = 0.0, const double y = 0.0, const double z = 0.0,
-                              const int system = COORDINATE_SYSTEM_BASIC, const double alpha = DEFAULT_ALPHA)
+                              const int system = ACCELMAGIQ_DEFAULT_COORDINATE_SYSTEM,
+                              const double alpha = ACCELMAGIQ_DEFAULT_LOW_PASS_FILTER_ALPHA)
             : currentSystem(system),
               alphaX(alpha), oneMinusAlphaX(1.0 - alpha),
               alphaY(alpha), oneMinusAlphaY(1.0 - alpha),
@@ -68,9 +63,9 @@ namespace accelmagiqlib
          * Sets the coordinate system for the filter.
          *
          * @param system The coordinate system to use:
-         *               - COORDINATE_SYSTEM_BASIC: 0
-         *               - COORDINATE_SYSTEM_TILT: 1
-         *               - COORDINATE_SYSTEM_RAW: 2
+         *               - COORDINATE_SYSTEM_RAW: 0
+         *               - COORDINATE_SYSTEM_BASIC: 1
+         *               - COORDINATE_SYSTEM_TILT: 2
          */
         void setCoordinateSystem(const int system);
 
