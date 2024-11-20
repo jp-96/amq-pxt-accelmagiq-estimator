@@ -1,11 +1,12 @@
 {
     "name": "pxt-accelmagiq-estimator",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "A Simplified Analytic Attitude Determination Algorithm Using Accelerometer and Magnetometer on micro:bit.",
     "dependencies": {
         "core": "*"
     },
     "files": [
+        "src/lib/AccelMagiQLibConfig.h",
         "src/lib/AccelMagiQLibCoordinateSpaceFilter.h",
         "src/lib/AccelMagiQLibCoordinateSpaceFilter.cpp",
         "src/lib/AccelMagiQLibQuaternionEstimator.h",
@@ -28,50 +29,15 @@
     ],
     "preferredEditor": "tsprj",
     "yotta": {
-        "config": {
+        "definitions": {
+            "ACCELMAGIQ_DEFAULT_LOW_PASS_FILTER_ALPHA": 0.3,
+            "ACCELMAGIQ_DEFAULT_COORDINATE_SYSTEM": 1,
             "ACCELMAGIQ_ESTIMATE_METHOD": 1
         },
-        "userConfigs": [
-            {
-                "description": "Disable Bluetooth Device Infomation Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "device_info_service": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Disable Bluetooth Secure DFU Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "dfu_service": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Disable Bluetooth Partial Flashing Service",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "partial_flashing": 0
-                        }
-                    }
-                }
-            },
-            {
-                "description": "Reset Bluetooth Enabled",
-                "config": {
-                    "microbit-dal": {
-                        "bluetooth": {
-                            "enabled": 1
-                        }
-                    }
-                }
-            }
-        ]
+        "config": {
+            "ACCELMAGIQ_DEFAULT_LOW_PASS_FILTER_ALPHA": 0.3,
+            "ACCELMAGIQ_DEFAULT_COORDINATE_SYSTEM": 1,
+            "ACCELMAGIQ_ESTIMATE_METHOD": 1
+        }
     }
 }
