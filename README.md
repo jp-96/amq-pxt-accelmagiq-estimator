@@ -16,6 +16,12 @@ world of quaternions.
 create precise quaternion calculations. It's a playful blend of 'acceleration', 'magnetometer', and 'magic' with
 quaternions ('Q'), making advanced concepts seem like magic!
 
+
+- [https://github.com/jp-96/amq-pxt-accelmagiq-estimate/](https://github.com/jp-96/amq-pxt-accelmagiq-estimate/)
+- [https://github.com/jp-96/amq-pxt-accelmagiq-service/](https://github.com/jp-96/amq-pxt-accelmagiq-service/)
+- [https://github.com/jp-96/amq-pxt-accelmagiq-math/](https://github.com/jp-96/amq-pxt-accelmagiq-math/)
+- [https://github.com/jp-96/amq-weblueth-accelmagiq/](https://github.com/jp-96/amq-weblueth-accelmagiq/)
+
 # Blocks preview
 
 <!--
