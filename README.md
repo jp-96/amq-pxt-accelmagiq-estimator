@@ -17,7 +17,7 @@ create precise quaternion calculations. It's a playful blend of 'acceleration', 
 quaternions ('Q'), making advanced concepts seem like magic!
 
 
-- [https://github.com/jp-96/amq-pxt-accelmagiq-estimate/](https://github.com/jp-96/amq-pxt-accelmagiq-estimate/)
+- [https://github.com/jp-96/amq-pxt-accelmagiq-estimator/](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/)
 - [https://github.com/jp-96/amq-pxt-accelmagiq-service/](https://github.com/jp-96/amq-pxt-accelmagiq-service/)
 - [https://github.com/jp-96/amq-pxt-accelmagiq-math/](https://github.com/jp-96/amq-pxt-accelmagiq-math/)
 - [https://github.com/jp-96/amq-weblueth-accelmagiq/](https://github.com/jp-96/amq-weblueth-accelmagiq/)
