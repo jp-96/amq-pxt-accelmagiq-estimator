@@ -1,5 +1,5 @@
 
-> Open this page at GitHub Pages: [https://github.com/jp-96/amq-pxt-accelmagiq-estimator/](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/)
+> Open this page at GitHub Pages: [https://jp-96.github.io/amq-pxt-accelmagiq-estimator/](https://jp-96.github.io/amq-pxt-accelmagiq-estimator/)
 
 ## Quaternions with AccelMagiQ and micro:bit!
 
