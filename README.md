@@ -94,4 +94,4 @@ basic.forever(function () {
 * for PXT/microbit
 
 <script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script>
-<script>makeCodeRender("{{ site.makecode.home_url }}", [ "custom=github:jp-96/amq-pxt-accelmagiq-estimator", ]);</script>
+<script>makeCodeRender("{{ site.makecode.home_url }}", [ "estimator=github:jp-96/amq-pxt-accelmagiq-estimator", "service=github:jp-96/amq-pxt-accelmagiq-service", "math=github:jp-96/amq-pxt-accelmagiq-math", ]);</script>
