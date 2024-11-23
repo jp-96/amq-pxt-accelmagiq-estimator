@@ -1,5 +1,5 @@
 
-> Open this page at GitHub Pages: [https://jp-96.github.io/amq-pxt-accelmagiq-estimator/](https://jp-96.github.io/amq-pxt-accelmagiq-estimator/)
+> Open this page at GitHub Pages: [https://jp-rad.github.io/amq-pxt-accelmagiq-estimator/](https://jp-rad.github.io/amq-pxt-accelmagiq-estimator/)
 
 ## Quaternions with AccelMagiQ and micro:bit!
 
@@ -17,10 +17,14 @@ create precise quaternion calculations. It's a playful blend of 'acceleration', 
 quaternions ('Q'), making advanced concepts seem like magic!
 
 
-- [https://github.com/jp-96/amq-pxt-accelmagiq-estimator/](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/)
-- [https://github.com/jp-96/amq-pxt-accelmagiq-service/](https://github.com/jp-96/amq-pxt-accelmagiq-service/)
-- [https://github.com/jp-96/amq-pxt-accelmagiq-math/](https://github.com/jp-96/amq-pxt-accelmagiq-math/)
-- [https://github.com/jp-96/amq-weblueth-accelmagiq/](https://github.com/jp-96/amq-weblueth-accelmagiq/)
+- [https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/](https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/)
+- [https://github.com/jp-rad/amq-pxt-accelmagiq-service/](https://github.com/jp-rad/amq-pxt-accelmagiq-service/)
+- [https://github.com/jp-rad/amq-pxt-accelmagiq-math/](https://github.com/jp-rad/amq-pxt-accelmagiq-math/)
+- [https://github.com/jp-rad/amq-weblueth-accelmagiq/](https://github.com/jp-rad/amq-weblueth-accelmagiq/)
+
+
+> [DEMO (github pages) - https://jp-rad.github.io/amq-weblueth-accelmagiq/](https://jp-rad.github.io/amq-weblueth-accelmagiq/)
+
 
 # Blocks preview
 
@@ -28,9 +32,9 @@ quaternions ('Q'), making advanced concepts seem like magic!
 This image shows the blocks code from the last commit in master.
 This image may take a few minutes to refresh.
 
-![A rendered view of the blocks](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/raw/master/.github/makecode/blocks.png)
+![A rendered view of the blocks](https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/raw/master/.github/makecode/blocks.png)
 -->
-![A rendered view of the blocks](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/raw/master/.github/statics/blocks.png)
+![A rendered view of the blocks](https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/raw/master/.github/statics/blocks.png)
 
 ## Use as Extension
 
@@ -39,17 +43,17 @@ This repository can be added as an **extension** in MakeCode.
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
 * click on **New Project**
 * click on **Extensions** under the gearwheel menu
-* search for **https://github.com/jp-96/amq-pxt-accelmagiq-estimator** and import
+* search for **https://github.com/jp-rad/amq-pxt-accelmagiq-estimator** and import
 
 ```text
-https://github.com/jp-96/amq-pxt-accelmagiq-estimator
+https://github.com/jp-rad/amq-pxt-accelmagiq-estimator
 ```
 
 ## Downloaded HEX file to Use as Extension
 
 Released HEX file can be imported as an **extension** in MakeCode.
 
-* open [https://github.com/jp-96/amq-pxt-accelmagiq-estimator/releases](https://github.com/jp-96/amq-pxt-accelmagiq-estimator/releases)
+* open [https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/releases](https://github.com/jp-rad/amq-pxt-accelmagiq-estimator/releases)
 * download HEX file
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
 * click on **New Project**
@@ -61,30 +65,46 @@ Released HEX file can be imported as an **extension** in MakeCode.
 
 ```blocks
 
+let angle: accelmagiq.EulerAngles = null
 let estimated: number[] = []
 if (input.buttonIsPressed(Button.B)) {
     input.calibrateCompass()
 }
 accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.BASIC)
-accelmagiq.setLowPassFilterAlpha(0.3)
+accelmagiq.setLowPassFilterAlpha(0.2)
 basic.forever(function () {
     estimated = accelmagiq.estimate()
     accelmagiq.notifyData(estimated)
+    angle = accelmagiq.rpyFromQuat(accelmagiq.quatFrom(estimated))
+    serial.writeNumbers([
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Roll)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Pitch)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Yaw)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Azimuth))
+    ])
 })
 
 ```
 
 ```js
 
+let angle: accelmagiq.EulerAngles = null
 let estimated: number[] = []
 if (input.buttonIsPressed(Button.B)) {
     input.calibrateCompass()
 }
 accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.BASIC)
-accelmagiq.setLowPassFilterAlpha(0.3)
+accelmagiq.setLowPassFilterAlpha(0.2)
 basic.forever(function () {
     estimated = accelmagiq.estimate()
     accelmagiq.notifyData(estimated)
+    angle = accelmagiq.rpyFromQuat(accelmagiq.quatFrom(estimated))
+    serial.writeNumbers([
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Roll)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Pitch)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Yaw)),
+    accelmagiq.intDeg(accelmagiq.angle(angle, accelmagiq.AngleRPY.Azimuth))
+    ])
 })
 
 ```
@@ -94,4 +114,4 @@ basic.forever(function () {
 * for PXT/microbit
 
 <script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script>
-<script>makeCodeRender("{{ site.makecode.home_url }}", [ "estimator=github:jp-96/amq-pxt-accelmagiq-estimator", "service=github:jp-96/amq-pxt-accelmagiq-service", "math=github:jp-96/amq-pxt-accelmagiq-math", ]);</script>
+<script>makeCodeRender("{{ site.makecode.home_url }}", [ "estimator=github:jp-rad/amq-pxt-accelmagiq-estimator", "service=github:jp-rad/amq-pxt-accelmagiq-service", "math=github:jp-rad/amq-pxt-accelmagiq-math", ]);</script>
