@@ -63,7 +63,9 @@ Released HEX file can be imported as an **extension** in MakeCode.
 
 ## Example
 
-```blocks
+**JavaScript**
+
+```js
 
 let angle: accelmagiq.EulerAngles = null
 let estimated: number[] = []
@@ -86,15 +88,22 @@ basic.forever(function () {
 
 ```
 
-```js
+**Blocks**
 
-let angle: accelmagiq.EulerAngles = null
-let estimated: number[] = []
+```blocks
+
 if (input.buttonIsPressed(Button.B)) {
     input.calibrateCompass()
 }
 accelmagiq.setCoordinateSystem(accelmagiq.CoordinateSystem.BASIC)
 accelmagiq.setLowPassFilterAlpha(0.2)
+
+```
+
+```blocks
+
+let estimated: number[] = []
+let angle: accelmagiq.EulerAngles = null
 basic.forever(function () {
     estimated = accelmagiq.estimate()
     accelmagiq.notifyData(estimated)
