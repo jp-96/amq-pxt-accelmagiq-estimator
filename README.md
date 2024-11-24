@@ -122,7 +122,6 @@ basic.forever(function () {
 
 * for PXT/microbit
 
-<script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension@0.5.0/.github/statics/gh-pages-embed.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/jp-rad/pxt-ubit-extension/.github/statics/gh-pages-embed.js"></script>
 <script>makeCodeRender("{{ site.makecode.home_url }}", [ "estimator=github:jp-rad/amq-pxt-accelmagiq-estimator", "service=github:jp-rad/amq-pxt-accelmagiq-service", "math=github:jp-rad/amq-pxt-accelmagiq-math", ]);</script>
-<style type="text/css">p img { max-width: 640px; }</style>
-<style type="text/css">pre img { max-width: initial; zoom: 0.75; }</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/jp-96/deleted.amq-pxt-accelmagiq-estimator/.github/statics/gh-pages-img.css">
